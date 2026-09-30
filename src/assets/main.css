@@ -1,0 +1,13 @@
+@import './base.css';
+
+/* 
+ * Reset container #app agar full-width mengikuti layar,
+ * sehingga Navbar dan Layout dapat tampil menyatu dan full-width
+ * sesuai spesifikasi modul praktikum.
+ */
+#app {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
