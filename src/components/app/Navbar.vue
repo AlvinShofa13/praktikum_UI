@@ -29,6 +29,7 @@ const menus = [
     ],
   },
   { name: 'Contact', path: '/contact' },
+  { name: 'Organizer Dashboard', path: '/dashboard' },
 ]
 
 const handleScroll = () => {
@@ -278,7 +279,7 @@ onUnmounted(() => {
 }
 
 .nav-link.active {
-  background-color: var(--primary, #6644ff);
+  background-color: var(--primary, #436cf5);
   font-weight: 600;
   box-shadow: 0 4px 15px rgba(102, 68, 255, 0.3);
 }
