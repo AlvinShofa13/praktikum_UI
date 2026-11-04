@@ -10,7 +10,7 @@ const router = useRouter();
 const { userRegistrations, cancelRegistration, getEventById, events } = useEvents();
 
 const activeRegistrations = computed(() => {
-  return userRegistrations.value.filter(r => events.value.some(e => e.id === r.eventId));
+  return userRegistrations.value.filter(r => events.value.some(e => String(e.id) === String(r.eventId)));
 });
 
 const isEventDone = (eventId) => {

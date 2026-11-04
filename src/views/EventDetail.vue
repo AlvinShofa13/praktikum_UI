@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useEvents } from '@/composables/useEvents';
 import AppButton from '@/components/ui/AppButton.vue';
@@ -7,11 +7,17 @@ import AppCard from '@/components/ui/AppCard.vue';
 
 const route = useRoute();
 const router = useRouter();
-const { getEventById, isUserRegistered } = useEvents();
+const { getEventById, isUserRegistered, fetchEventById, loading, error } = useEvents();
 
 const event = computed(() => getEventById(route.params.id));
 const isRegistered = computed(() => {
   return event.value ? isUserRegistered(event.value.id) : false;
+});
+
+onMounted(async () => {
+  if (!event.value) {
+    await fetchEventById(route.params.id);
+  }
 });
 </script>
 
@@ -21,7 +27,13 @@ const isRegistered = computed(() => {
       &larr; Back to Events
     </button>
 
-    <div v-if="event" class="detail-container">
+    <div v-if="loading" class="detail-header skeleton-shimmer" style="min-height: 180px; display: flex; align-items: center; justify-content: center;">
+      <p style="color: var(--text-muted); font-size: 1.1rem; font-weight: 500;">
+        ⏳ Memuat rincian acara dari server...
+      </p>
+    </div>
+
+    <div v-else-if="event">
       <div class="detail-header">
         <div class="header-tags">
           <span class="event-tag">{{ event.cat }}</span>
@@ -116,9 +128,8 @@ const isRegistered = computed(() => {
     </div>
 
     <div v-else class="not-found-card">
-      <div class="not-found-icon">🔍</div>
       <h2>404 - Event Not Found</h2>
-      <p>The event you are looking for is unavailable or has been removed by the organizer.</p>
+      <p>{{ error || 'The event you are looking for is unavailable or has been removed by the organizer.' }}</p>
       <AppButton variant="primary" @click="router.push('/browse/events')">
         Back to Event Catalog
       </AppButton>
@@ -260,12 +271,12 @@ const isRegistered = computed(() => {
   font-size: 0.95rem;
 }
 
-.text-success {
+.ticket-desc.text-success {
   color: #15803d;
   font-weight: 500;
 }
 
-.text-warning {
+.ticket-desc.text-warning {
   color: #b91c1c;
   font-weight: 500;
 }
