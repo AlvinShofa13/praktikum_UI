@@ -79,7 +79,7 @@ const breadcrumbs = computed(() => {
 
 .breadcrumb a {
   text-decoration: none;
-  color: var(--primary, #6644ff);
+  color: var(--primary, #436cf5);
   font-weight: 500;
 }
 
